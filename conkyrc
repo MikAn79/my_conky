@@ -1,6 +1,4 @@
 ###############################
-# Настройки Алексея Долотова  #
-# для сайта sevo44.ru         #
 ###############################
 update_interval 1
 total_run_times 0
@@ -30,10 +28,10 @@ own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
 border_inner_margin 4
 border_outer_margin 1
 alignment top_right
-gap_x 15
-gap_y 15
-minimum_size 182 700
-maximum_width 182
+gap_x -1910
+gap_y 5
+minimum_size 200 700
+maximum_width 200
 default_bar_size 60 8
 
 
@@ -48,11 +46,16 @@ default_bar_size 60 8
 draw_borders no
 draw_graph_borders no
 draw_shades yes
+#default_color 0077ff
 default_color cccccc
 color0 D3D2D5
 color1 77507b
 color2 F2F2F2
 color3 5C3566
+#color0 0077ff
+#color1 0077ff
+#color2 0077ff
+#color3 0077ff
 ######################################
 # Начало кода вывода после кода TEXT #
 ######################################
@@ -73,7 +76,8 @@ ${color}Ядро:  ${alignr}${color FFA300}${kernel}_$machine
 # Процессор #
 #############
 ${color}Процессор :${color FFA300}${alignr}${cpu}% / GHz: $freq_g
-${color ffffff}${cpubar 4,180}
+#${color ffffff}${cpubar 10,180}
+${cpugraph 15,180 666666 666666}
 ${voffset 2}${offset 2}${color0}${font Poky:size=14}P${font}${offset -19}${voffset 9}${offset 1}${cpubar cpu0 4,18}${color}${voffset -16}${goto 32}CPU1: ${font Ubuntu:style=Bold:size=8}${color0}${cpu cpu1}%${color}${font} ${goto 95}${alignc}${color2}${cpubar cpu1 6,50 77507B 5C3566}${color} ${alignr}${exec sensors|grep 'Core 0'|awk '{print $3}'}
 ${goto 32}CPU2: ${font Ubuntu:style=Bold:size=8}${color0}${cpu cpu2}%${color}${font} ${goto 95}${alignc}${color2}${cpubar cpu2 6,50 77507B 5C3566}${color} ${alignr}${exec sensors|grep 'Core 1'|awk '{print $3}'}
 ${goto 32}CPU3: ${font Ubuntu:style=Bold:size=8}${color0}${cpu cpu3}%${color}${font} ${goto 95}${alignc}${color2}${cpubar cpu3 6,50 77507B 5C3566}${color} ${alignr}${exec sensors|grep 'Core 2'|awk '{print $3}'}
@@ -100,8 +104,11 @@ ${voffset -4}${color #cccc00}${hr 0}
 #########
 # ДИСКИ #
 #########
-${color0}${font Poky:size=10}f${font}${voffset -1}${color FFA300} Домашняя папка:${color} $HOME
-${color0}${font Poky:size=10}y${font}${color FFA300} Занято:${color}${fs_used /}  /  ${color FFA300}Своб:${color}${fs_free /home}
+${color0}${font Poky:size=10}f${font}${voffset -1}${color FFA300} Домашняя папка:${color}$HOME
+${color0}${font Poky:size=10}f${font}${color FFA300} Занято:${color}${fs_used /home} / ${color FFA300}Своб:${color}${fs_free /home}
+${voffset -4}${color #cccc00}${hr 0}
+${color0}${font Poky:size=10}y${font}${voffset -1}${color FFA300} Системная папка:${color}
+${color0}${font Poky:size=10}y${font}${color FFA300} Занято:${color}${fs_used /} / ${color FFA300}Своб:${color}${fs_free /}
 ${fs_bar 4,180}${color}
 ${exec df -h | grep "/dev/sd" | awk '{printf "%s of %s \t : %s\n", $5, $2, $6 }'}
 ####################################
@@ -125,7 +132,7 @@ ${color0}${font Poky:size=10}x${font}${color 00FF00} Порт(ы)${alignr}Cое�
 ${color} Local: ${tcp_portmon 1 32767 count} / Remote: ${tcp_portmon 32768 65535 count}${alignr}Все: ${tcp_portmon 1 65535 count}
 ${font PIZZADUDEBULLETS:size=10}Z${goto 25}${font}${color 00FF00}Local: ${alignr}Порт${color}
 ${tcp_portmon 1 32767 rhost 0} ${alignr} ${tcp_portmon 1 32767 lservice 0}
-${tcp_portmon 1 32767 rhost 1} ${alignr} ${tcp_portmon 1 32767 lservice 1}
+#${tcp_portmon 1 32767 rhost 1} ${alignr} ${tcp_portmon 1 32767 lservice 1}
 #${voffset 1}
 ${font PIZZADUDEBULLETS:size=10}Y${goto 25}${font}${color 00FF00}Remote: ${alignr}Порт${color}
 ${tcp_portmon 32768 65535 rhost 0} ${alignr} ${tcp_portmon 32768 61000 rservice 0}
@@ -146,7 +153,9 @@ ${color0}${font PIZZADUDEBULLETS:size=8}e${font}${color FFA300}${font} Lan IP: $
 ${color0}${font PIZZADUDEBULLETS:size=8}b${font}${color FFA300}${font} Публичный IP: ${alignr}${color F2F2F2}${execi 3600 wget -q -O - checkip.dyndns.org|sed -e 's/.*Current IP Address: //' -e 's/<.*$//'}
 #########
 ${voffset -4}${color #cccc00}${hr 0}
-#########
+###############
+# Температура
+###############
 ${voffset 2}${offset 1}${color0}${font Poky:size=14}M${font}${color}${goto 32}${voffset -7}${color FFA300}TEMP:
 #${hr 0}
 
