@@ -71,17 +71,36 @@ ${font Ubuntu:style=Bold:size=8}${color}Имя машины: ${alignr}${font}${c
 ${color}Ядро:  ${alignr}${color FFA300}${kernel}_$machine
 #${color}Работает: ${alignr}${color FFA300}${uptime}
 ####################################
-#${voffset -4}${color #cccc00}${hr 0}
+${voffset -4}${color #cccc00}${hr 0}
 #############
 # Процессор #
 #############
 ${color}Процессор :${color FFA300}${alignr}${cpu}% / GHz: $freq_g
 #${color ffffff}${cpubar 10,180}
-${cpugraph 15,180 666666 666666}
+#${cpugraph 15,180 666666 666666}
 ${voffset 2}${offset 2}${color0}${font Poky:size=14}P${font}${offset -19}${voffset 9}${offset 1}${cpubar cpu0 4,18}${color}${voffset -16}${goto 32}CPU1: ${font Ubuntu:style=Bold:size=8}${color0}${cpu cpu1}%${color}${font} ${goto 95}${alignc}${color2}${cpubar cpu1 6,50 77507B 5C3566}${color} ${alignr}${exec sensors|grep 'Core 0'|awk '{print $3}'}
 ${goto 32}CPU2: ${font Ubuntu:style=Bold:size=8}${color0}${cpu cpu2}%${color}${font} ${goto 95}${alignc}${color2}${cpubar cpu2 6,50 77507B 5C3566}${color} ${alignr}${exec sensors|grep 'Core 1'|awk '{print $3}'}
 ${goto 32}CPU3: ${font Ubuntu:style=Bold:size=8}${color0}${cpu cpu3}%${color}${font} ${goto 95}${alignc}${color2}${cpubar cpu3 6,50 77507B 5C3566}${color} ${alignr}${exec sensors|grep 'Core 2'|awk '{print $3}'}
 ${goto 32}CPU4: ${font Ubuntu:style=Bold:size=8}${color0}${cpu cpu4}%${color}${font} ${goto 95}${alignc}${color2}${cpubar cpu4 6,50 77507B 5C3566}${color} ${alignr}${exec sensors|grep 'Core 3'|awk '{print $3}'}
+###############
+${voffset -4}${color #cccc00}${hr 0}
+###############
+# Температура
+###############
+${voffset 2}${offset 1}${color0}${font Poky:size=14}M${font}${color}${goto 32}${voffset -7}${color FFA300}TEMP:
+#${hr 0}
+
+${color2}Температура GPU:  ${alignr}${nvidia temp}°C
+${color2}GPU Fan:  ${alignr}${color2}${execi 5 nvidia-settings -q [fan:0]/GPUCurrentFanSpeed -t} %
+#${color2}GPU Fan:  ${alignr}${color2}${execi 5 nvidia-settings -q GPUCurrentFanSpeed} RPM
+
+${color2}Температура проц: ${alignr}${exec sensors|grep 'Core 0'|awk '{print $3}'}
+#${exec cat /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input | cut -c-2 }°С
+${color2}Вентилятор  проц: ${alignr}${cat /sys/class/hwmon/hwmon4/fan1_input} RPM
+${color2}Вентилятор  SYS: ${alignr}${cat /sys/class/hwmon/hwmon4/fan2_input} RPM
+${voffset -4}${color #cccc00}${hr 0}
+#CPU Fan Speed ${alignr}${exec sensors | grep fan4 | cut -d " " -f 9,10}
+#CPU Fan Speed ${alignr}${execi 10 sensors | grep fan1 | cut -d " " -f 9,10}
 ##########
 # Память #
 ##########
@@ -153,23 +172,7 @@ ${color0}${font PIZZADUDEBULLETS:size=8}e${font}${color FFA300}${font} Lan IP: $
 ${color0}${font PIZZADUDEBULLETS:size=8}b${font}${color FFA300}${font} Публичный IP: ${alignr}${color F2F2F2}${execi 3600 wget -q -O - checkip.dyndns.org|sed -e 's/.*Current IP Address: //' -e 's/<.*$//'}
 #########
 ${voffset -4}${color #cccc00}${hr 0}
-###############
-# Температура
-###############
-${voffset 2}${offset 1}${color0}${font Poky:size=14}M${font}${color}${goto 32}${voffset -7}${color FFA300}TEMP:
-#${hr 0}
 
-${color2}Температура GPU:  ${alignr}${nvidia temp}°C
-${color2}GPU Fan:  ${alignr}${color2}${execi 5 nvidia-settings -q [fan:0]/GPUCurrentFanSpeed -t} %
-#${color2}GPU Fan:  ${alignr}${color2}${execi 5 nvidia-settings -q GPUCurrentFanSpeed} RPM
-
-${color2}Температура проц: ${alignr}${exec sensors|grep 'Core 0'|awk '{print $3}'}
-#${exec cat /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input | cut -c-2 }°С
-${color2}Вентилятор  проц: ${alignr}${cat /sys/class/hwmon/hwmon4/fan1_input} RPM
-${color2}Вентилятор  SYS: ${alignr}${cat /sys/class/hwmon/hwmon4/fan2_input} RPM
-${voffset -4}${color #cccc00}${hr 0}
-#CPU Fan Speed ${alignr}${exec sensors | grep fan4 | cut -d " " -f 9,10}
-#CPU Fan Speed ${alignr}${execi 10 sensors | grep fan1 | cut -d " " -f 9,10}
 
 
 #########
